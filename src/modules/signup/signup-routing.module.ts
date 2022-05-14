@@ -9,9 +9,8 @@ const routes: Routes = [
     path: '',
     component: SignupComponent,
     children: [
-      { path: '', redirectTo: '/user-infor', pathMatch: 'full' },
       {
-        path: 'user-infor', component: UserInforComponent
+        path: '', component: UserInforComponent,
       },
       { path: 'address-infor', component: AddressInforComponent }
     ]

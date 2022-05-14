@@ -14,7 +14,7 @@ export class AddressInforComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['signup', 'user-infor'])
+    this.router.navigate(['signup'])
   }
 
 }
