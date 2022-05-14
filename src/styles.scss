@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .form-control {
+    @apply block w-full px-3 py-1.5  bg-clip-padding border border-solid rounded transition ease-in-out m-0
+        border-gray-300 text-gray-700 bg-white focus:text-gray-700 focus:bg-white focus:border-primary-2 focus:outline-none;
+  }
+  .form-select {
+    @apply bg-clip-padding bg-no-repeat;
+  }
+  .form-button {
+    @apply block px-6 py-2.5 text-white font-medium rounded shadow-md bg-primary-2 hover:border-primary-2 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3;
+  }
+}
+
+html,
+body {
+  min-height: 100vh;
+}
