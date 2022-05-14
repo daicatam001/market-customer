@@ -5,10 +5,11 @@
 @layer components {
   .form-control {
     @apply block w-full px-3 py-1.5  bg-clip-padding border border-solid rounded transition ease-in-out m-0
-        border-gray-400 text-gray-700 bg-white focus:text-gray-700 focus:bg-white focus:border-primary-2 focus:outline-none;
+        border-gray-400 text-gray-700 bg-white focus:text-gray-700 focus:bg-white focus:border-primary-2 focus:ring-primary-2 focus:outline-primary-2;
   }
-  .form-select {
-    @apply bg-clip-padding bg-no-repeat;
+  .form-select,
+  .form-textarea {
+    @apply bg-clip-padding bg-no-repeat focus:outline-none;
   }
   .form-button {
     @apply block px-6 py-2.5 text-white font-medium rounded shadow-md bg-primary-2 hover:border-primary-2 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3;
