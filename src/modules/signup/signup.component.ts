@@ -12,7 +12,8 @@ export class SignupComponent implements OnInit{
 
   }
   ngOnInit(): void {
-    // this.resourcesStore.getResources()
+    this.resourcesStore.getResources()
+    this.resourcesStore.testReousrce()
   } 
 }
 

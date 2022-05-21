@@ -11,4 +11,11 @@ export default class ResourcesService {
             "version": "1.0"
         })
     }
+    testReousrce() {
+        return this.http.post(`https://jsonplaceholder.typicode.com/posts`, {
+            title: 'foo',
+            body: 'bar',
+            userId: 1,
+        })
+    }
 }

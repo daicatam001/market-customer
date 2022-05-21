@@ -15,7 +15,7 @@ export interface ResourcesState {
 @Injectable({ providedIn: 'root' })
 export class ResourcesStore extends ComponentStore<ResourcesState> {
 
-    constructor(private resroucesService: ResourcesService) {
+    constructor(private resroucesService: ResourcesService,) {
         super({
             provinceEntry: {},
             districtEntry: {},
@@ -26,6 +26,14 @@ export class ResourcesStore extends ComponentStore<ResourcesState> {
     readonly getResources = this.effect($effect =>
         $effect.pipe(switchMap(() =>
             this.resroucesService.getAddresses().pipe(tap(res => {
+                console.log(res)
+            })
+            )
+        ))
+    )
+    readonly testReousrce = this.effect($effect =>
+        $effect.pipe(switchMap(() =>
+            this.resroucesService.testReousrce().pipe(tap(res => {
                 console.log(res)
             })
             )
