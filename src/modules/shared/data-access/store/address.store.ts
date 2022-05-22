@@ -28,6 +28,21 @@ export class AddressStore extends ComponentStore<ResourcesState> {
     });
   }
 
+  readonly provinceEntry$ = this.select((state) => state.provinceEntry);
+  readonly districtEntry$ = this.select((state) => state.districtEntry);
+  readonly wardEntry$ = this.select((state) => state.wardEntry);
+
+  readonly provinces$ = this.select(this.provinceEntry$, (entry) =>
+    Object.values(entry)
+  );
+  readonly districts$ = this.select(this.districtEntry$, (entry) =>
+    Object.values(entry)
+  );
+
+  readonly wards$ = this.select(this.wardEntry$, (entry) =>
+    Object.values(entry)
+  );
+
   readonly getAddress = this.effect(($effect) =>
     $effect.pipe(
       switchMap(() =>
@@ -42,14 +57,14 @@ export class AddressStore extends ComponentStore<ResourcesState> {
                 p.district.forEach((d) => {
                   districtEntry[d.id] = {
                     id: d.id,
-                    name: p.name,
+                    name: d.name,
                     provinceId: p.id,
                   };
                   if (d.ward) {
-                    p.district.forEach((d) => {
-                      wardEntry[d.id] = {
-                        id: d.id,
-                        name: p.name,
+                    d.ward.forEach((w) => {
+                      wardEntry[w.id] = {
+                        id: w.id,
+                        name: w.name,
                         districtId: d.id,
                       };
                     });

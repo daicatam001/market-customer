@@ -9,4 +9,4 @@ import { AuthFormComponent } from './auth-form.component';
     declarations: [AuthFormComponent],
     providers: [],
 })
-export class NameModule { }
+export class AuthFormModule { }

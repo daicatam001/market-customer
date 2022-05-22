@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { WebSellModule } from '@shell/feature';
 import { AppComponent } from './app.component';
 import { AddressStore } from '@shared/data-access/store/address.store';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 function initializeApp(addressStore:AddressStore){
@@ -18,6 +19,7 @@ function initializeApp(addressStore:AddressStore){
   imports: [
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule,
     WebSellModule,
   ],
   providers: [
