@@ -7,7 +7,7 @@ import { take, tap } from 'rxjs';
 @Component({
   selector: 'user-info',
   template: `
-    <auth-form>
+    <auth-form *ngIf="vm$ | async as vm">
       <div class="py-8 px-4 md:px-8 md:col-span-1 col-span-2">
         <div class="text-center mb-6">
           <img
@@ -39,7 +39,9 @@ import { take, tap } from 'rxjs';
           </div>
           <div class="space-y-4">
             <button
+              [disabled]="!vm.isValidUserInfo"
               class="form-button bg-gradient-to-r from-primary-2/20 to-primary-1/20"
+              [ngClass]="{ 'bg-opacity-20': !vm.isValidUserInfo }"
             >
               Tiếp tục
             </button>
@@ -58,6 +60,8 @@ import { take, tap } from 'rxjs';
 })
 export class UserInforComponent implements OnInit {
   form: FormGroup;
+
+  readonly vm$ = this.authStore.vm$;
   constructor(
     private fb: FormBuilder,
     private router: Router,

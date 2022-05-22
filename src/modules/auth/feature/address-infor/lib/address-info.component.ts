@@ -7,7 +7,7 @@ import { tap } from 'rxjs';
 @Component({
   selector: 'address-info',
   template: `
-    <auth-form>
+    <auth-form *ngIf="vm$ | async as vm">
       <div class="py-8 px-4 md:px-8 md:col-span-1 col-span-2">
         <div class="mb-4">
           <div class="text-2xl font-bold">Thông tin địa chỉ</div>
@@ -21,7 +21,7 @@ import { tap } from 'rxjs';
                 class="form-control form-select placeholder:text-gray-400"
                 formControlName="province"
               >
-                <option *ngFor="let p of provinces$ | async" [ngValue]="p.id">
+                <option *ngFor="let p of vm.provinces" [ngValue]="p.id">
                   {{ p.name }}
                 </option>
               </select>
@@ -32,10 +32,7 @@ import { tap } from 'rxjs';
                 class="form-control form-select"
                 formControlName="district"
               >
-                <option
-                  *ngFor="let p of districtsByProv$ | async"
-                  [ngValue]="p.id"
-                >
+                <option *ngFor="let p of vm.districtsByProv" [ngValue]="p.id">
                   {{ p.name }}
                 </option>
               </select>
@@ -43,7 +40,7 @@ import { tap } from 'rxjs';
             <div class="space-y-2">
               <label class="form-label font-medium">Phường / Xã</label>
               <select class="form-control form-select" formControlName="ward">
-                <option *ngFor="let p of wardsByDis$ | async" [ngValue]="p.id">
+                <option *ngFor="let p of vm.wardsByDis" [ngValue]="p.id">
                   {{ p.name }}
                 </option>
               </select>
@@ -53,13 +50,16 @@ import { tap } from 'rxjs';
               <textarea
                 class="form-control form-textarea"
                 placeholder="Nhập địa chỉ chính xác"
+                formControlName="address"
               ></textarea>
             </div>
           </div>
         </form>
         <div class="space-y-4">
           <button
-            class="form-button bg-gradient-to-r from-primary-2 to-primary-1"
+            [disabled]="!vm.isValidAddressInfo"
+            class="form-button bg-gradient-to-r from-primary-2/20 to-primary-1/20"
+            [ngClass]="{ 'bg-opacity-20': !vm.isValidAddressInfo }"
           >
             Tiếp tục
           </button>
@@ -76,9 +76,7 @@ import { tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressInforComponent implements OnInit {
-  readonly provinces$ = this.authStore.provinces$;
-  readonly districtsByProv$ = this.authStore.districtsByProv$;
-  readonly wardsByDis$ = this.authStore.wardsByDis$;
+  readonly vm$ = this.authStore.vm$;
   form: FormGroup;
 
   constructor(

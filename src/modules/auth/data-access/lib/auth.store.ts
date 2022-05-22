@@ -21,13 +21,23 @@ export class AuthStore extends ComponentStore<AuthState> {
         phoneNumber: '',
         province: null,
         district: null,
-        wardId: null,
+        ward: null,
+        address: '',
       },
     });
   }
   readonly user$ = this.select((state) => state.user);
   readonly province$ = this.select(this.user$, (state) => state.province);
   readonly district$ = this.select(this.user$, (state) => state.district);
+  readonly isValidUserInfo$ = this.select(
+    this.user$,
+    (state) => state.name.trim() && state.phoneNumber.trim()
+  );
+  readonly isValidAddressInfo$ = this.select(
+    this.user$,
+    (state) =>
+      state.province && state.district && state.ward && state.address.trim()
+  );
 
   readonly provinces$ = this.addressStore.provinces$;
   readonly districtsByProv$ = this.addressStore.districts$.pipe(
@@ -42,6 +52,27 @@ export class AuthStore extends ComponentStore<AuthState> {
     map(([districts, district]: [WardEntry[], number | null]) =>
       districts.filter((d) => d.districtId === district)
     )
+  );
+
+  readonly vm$ = this.select(
+    this.provinces$,
+    this.districtsByProv$,
+    this.wardsByDis$,
+    this.isValidUserInfo$,
+    this.isValidAddressInfo$,
+    (
+      provinces,
+      districtsByProv,
+      wardsByDis,
+      isValidUserInfo,
+      isValidAddressInfo
+    ) => ({
+      provinces,
+      districtsByProv,
+      wardsByDis,
+      isValidUserInfo,
+      isValidAddressInfo,
+    })
   );
 
   updateUser = this.updater((state, userData: Partial<RegisterUser>) => ({

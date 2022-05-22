@@ -3,5 +3,6 @@ export interface RegisterUser {
   phoneNumber: string;
   province: number | null;
   district: number | null;
-  wardId: number | null;
+  ward: number | null;
+  address: string;
 }
