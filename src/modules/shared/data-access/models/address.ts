@@ -1,13 +1,19 @@
-export interface Province {
-    id: number;
-    name: string
+export interface Address {
+  id: number;
+  name: string;
 }
+export type Province = Address & {
+  district: District[];
+};
 
-export interface District {
-    id: number
-    name: string
-}
-export interface Ward {
-    id: number
-    name: string
-}
+export type District = Address & {
+  ward: Address[];
+};
+
+export type DistrictEntry = Address & {
+  provinceId: number;
+};
+
+export type WardEntry = Address & {
+  districtId: number;
+};

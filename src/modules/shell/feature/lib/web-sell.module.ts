@@ -5,7 +5,7 @@ import { webSellRoutes } from './web-sell.routes';
 @NgModule({
     imports: [RouterModule.forRoot(webSellRoutes)],
     exports: [RouterModule],
-    declarations: [],
+    declarations: [], 
     providers: [],
 })
 export class WebSellModule { }

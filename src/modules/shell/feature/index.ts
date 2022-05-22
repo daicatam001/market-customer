@@ -1,1 +1,1 @@
-export *  from './web-sell.module'
+export *  from './lib/web-sell.module'
