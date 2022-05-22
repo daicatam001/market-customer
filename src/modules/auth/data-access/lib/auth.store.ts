@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ComponentStore } from '@ngrx/component-store';
 import {
   DistrictEntry,
@@ -7,7 +8,15 @@ import {
 } from '@shared/data-access/models';
 import AddressApi from '@shared/data-access/server-api/lib/address.api';
 import { AddressStore } from '@shared/data-access/store';
-import { combineLatest, combineLatestWith, map, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  combineLatestWith,
+  EMPTY,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs';
 
 export interface AuthState {
   user: Omit<RegisterUser, 'sessionId'>;
@@ -17,7 +26,8 @@ export interface AuthState {
 export class AuthStore extends ComponentStore<AuthState> {
   constructor(
     private addressStore: AddressStore,
-    private addressApi: AddressApi
+    private addressApi: AddressApi,
+    private router: Router
   ) {
     super({
       user: {
@@ -29,6 +39,7 @@ export class AuthStore extends ComponentStore<AuthState> {
         address: '',
       },
     });
+    // super(<AuthState>{})
     this.addressStore.getAddress();
   }
   readonly user$ = this.select((state) => state.user);
@@ -93,10 +104,18 @@ export class AuthStore extends ComponentStore<AuthState> {
       switchMap(() =>
         combineLatest([this.addressStore.sessionId$, this.user$]).pipe(
           switchMap(([sessionId, user]) =>
-            this.addressApi.registerAddress({
-              sessionId,
-              ...user,
-            })
+            this.addressApi
+              .registerAddress({
+                sessionId,
+                ...user,
+              })
+              .pipe(
+                tap({
+                  next: () => this.router.navigate(['home']),
+                  error: (e) => console.log(e),
+                }),
+                catchError(() => EMPTY)
+              )
           )
         )
       )

@@ -6,6 +6,11 @@ export const webSellRoutes: Routes = [
         redirectTo: 'auth',
         pathMatch: 'full'
     },
+    
+    {
+        path: 'home',
+        loadChildren: async () => (await import('@home/feature/shell')).HomeSellModule
+    },
     {
         path: 'auth',
         loadChildren: async () => (await import('@auth/feature/shell')).AuthSellModule

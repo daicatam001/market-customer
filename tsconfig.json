@@ -33,6 +33,9 @@
       "@shell/*": [
         "src/modules/shell/*"
       ],
+      "@home/*": [
+        "src/modules/home/*"
+      ],
     }
   },
   "angularCompilerOptions": {
