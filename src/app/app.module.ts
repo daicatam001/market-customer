@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { getAppConfigProvider } from '@shared/data-access/app-config/app-config.token';
 import { environment } from 'src/environments/environment';
-import { SignupModule } from "../modules/signup/signup.module";
-import { AppRoutingModule } from './app-routing.module';
+import { WebSellModule } from '@shell/feature';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -14,8 +13,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
-    SignupModule,
+    WebSellModule,
   ],
   providers: [
     getAppConfigProvider(environment)

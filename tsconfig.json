@@ -26,6 +26,12 @@
       "@shared/*": [
         "src/modules/shared/*"
       ],
+      "@auth/*": [
+        "src/modules/auth/*"
+      ],
+      "@shell/*": [
+        "src/modules/shell/*"
+      ],
     }
   },
   "angularCompilerOptions": {

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
     selector: 'app-auth-form',
     template:`
-        this is auth form
+       
     `
 })
 
