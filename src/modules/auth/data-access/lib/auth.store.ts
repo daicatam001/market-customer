@@ -5,26 +5,31 @@ import {
   RegisterUser,
   WardEntry,
 } from '@shared/data-access/models';
-import { AddressStore } from '@shared/data-access/store/address.store';
-import { combineLatestWith, map, Observable, tap } from 'rxjs';
+import AddressApi from '@shared/data-access/server-api/lib/address.api';
+import { AddressStore } from '@shared/data-access/store';
+import { combineLatest, combineLatestWith, map, switchMap, tap } from 'rxjs';
 
 export interface AuthState {
-  user: RegisterUser;
+  user: Omit<RegisterUser, 'sessionId'>;
 }
 
 @Injectable()
 export class AuthStore extends ComponentStore<AuthState> {
-  constructor(private addressStore: AddressStore) {
+  constructor(
+    private addressStore: AddressStore,
+    private addressApi: AddressApi
+  ) {
     super({
       user: {
         name: '',
         phoneNumber: '',
         province: null,
         district: null,
-        ward: null,
+        wardId: null,
         address: '',
       },
     });
+    this.addressStore.getAddress();
   }
   readonly user$ = this.select((state) => state.user);
   readonly province$ = this.select(this.user$, (state) => state.province);
@@ -36,7 +41,7 @@ export class AuthStore extends ComponentStore<AuthState> {
   readonly isValidAddressInfo$ = this.select(
     this.user$,
     (state) =>
-      state.province && state.district && state.ward && state.address.trim()
+      state.province && state.district && state.wardId && state.address.trim()
   );
 
   readonly provinces$ = this.addressStore.provinces$;
@@ -60,18 +65,21 @@ export class AuthStore extends ComponentStore<AuthState> {
     this.wardsByDis$,
     this.isValidUserInfo$,
     this.isValidAddressInfo$,
+    this.user$,
     (
       provinces,
       districtsByProv,
       wardsByDis,
       isValidUserInfo,
-      isValidAddressInfo
+      isValidAddressInfo,
+      user
     ) => ({
       provinces,
       districtsByProv,
       wardsByDis,
       isValidUserInfo,
       isValidAddressInfo,
+      user,
     })
   );
 
@@ -80,8 +88,18 @@ export class AuthStore extends ComponentStore<AuthState> {
     user: { ...state.user, ...userData },
   }));
 
-  updateUserEffect = this.effect(
-    ($userData: Observable<Partial<RegisterUser>>) =>
-      $userData.pipe(tap((userData) => this.updateUser(userData)))
+  regiserUser = this.effect(($effect) =>
+    $effect.pipe(
+      switchMap(() =>
+        combineLatest([this.addressStore.sessionId$, this.user$]).pipe(
+          switchMap(([sessionId, user]) =>
+            this.addressApi.registerAddress({
+              sessionId,
+              ...user,
+            })
+          )
+        )
+      )
+    )
   );
 }

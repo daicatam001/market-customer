@@ -2,11 +2,8 @@ export type EntryData<U> = {
   [key: string | number]: U;
 };
 
-export type ResponseData<U, V extends string> = {
+export type ResponseData = {
   errorCode: number;
   errorMessage: string;
-  sectionId: string;
-} &
- {
-  [K in V]: U;
-};
+  sessionId: string;
+}

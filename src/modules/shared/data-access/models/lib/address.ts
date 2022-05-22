@@ -1,3 +1,5 @@
+import { ResponseData } from './common';
+
 export interface Address {
   id: number;
   name: string;
@@ -16,4 +18,9 @@ export type DistrictEntry = Address & {
 
 export type WardEntry = Address & {
   districtId: number;
+};
+
+export type AddressRes = ResponseData & {
+  province: Province[];
+  sessionId: string;
 };

@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { switchMap, tap } from 'rxjs';
 import {
-  Province,
-  EntryData,
-  District,
   Address,
-  ResponseData,
+  AddressRes,
   DistrictEntry,
+  EntryData,
   WardEntry,
 } from '@shared/data-access/models';
-import AddressApi from '@shared/data-access/server-api/address.api';
+import AddressApi from '@shared/data-access/server-api/lib/address.api';
+import { switchMap, tap } from 'rxjs';
 
 export interface ResourcesState {
   provinceEntry: EntryData<Address>;
   districtEntry: EntryData<DistrictEntry>;
   wardEntry: EntryData<WardEntry>;
+  sessionId: string | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -25,9 +24,10 @@ export class AddressStore extends ComponentStore<ResourcesState> {
       provinceEntry: {},
       districtEntry: {},
       wardEntry: {},
+      sessionId: null,
     });
   }
-
+  readonly sessionId$ = this.select((state) => state.sessionId);
   readonly provinceEntry$ = this.select((state) => state.provinceEntry);
   readonly districtEntry$ = this.select((state) => state.districtEntry);
   readonly wardEntry$ = this.select((state) => state.wardEntry);
@@ -47,7 +47,7 @@ export class AddressStore extends ComponentStore<ResourcesState> {
     $effect.pipe(
       switchMap(() =>
         this.addressApi.getAddresses().pipe(
-          tap((res: ResponseData<Province[], 'province'>) => {
+          tap((res: AddressRes) => {
             const provinceEntry: EntryData<Address> = {},
               districtEntry: EntryData<DistrictEntry> = {},
               wardEntry: EntryData<WardEntry> = {};
@@ -72,11 +72,11 @@ export class AddressStore extends ComponentStore<ResourcesState> {
                 });
               }
             });
-
             this.setState({
               provinceEntry,
               districtEntry,
               wardEntry,
+              sessionId: res.sessionId,
             });
           })
         )

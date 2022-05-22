@@ -5,13 +5,13 @@ import { getAppConfigProvider } from '@shared/data-access/app-config/app-config.
 import { environment } from 'src/environments/environment';
 import { WebSellModule } from '@shell/feature';
 import { AppComponent } from './app.component';
-import { AddressStore } from '@shared/data-access/store/address.store';
+import { AddressStore } from '@shared/data-access/store/lib/address.store';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
-function initializeApp(addressStore:AddressStore){
- return ()=> addressStore.getAddress()
-}
+// function initializeApp(addressStore:AddressStore){
+//  return ()=> addressStore.getAddress()
+// }
 @NgModule({
   declarations: [
     AppComponent
@@ -24,12 +24,12 @@ function initializeApp(addressStore:AddressStore){
   ],
   providers: [
     getAppConfigProvider(environment),
-    {
-      provide:APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps:[AddressStore],
-      multi:true
-    }
+    // {
+    //   provide:APP_INITIALIZER,
+    //   useFactory: initializeApp,
+    //   deps:[AddressStore],
+    //   multi:true
+    // }
   ],
   bootstrap: [AppComponent]
 })

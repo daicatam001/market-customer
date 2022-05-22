@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthStore } from '@auth/data-access';
-import { tap } from 'rxjs';
+import { combineLatest, take, tap } from 'rxjs';
 
 @Component({
   selector: 'address-info',
@@ -39,7 +39,7 @@ import { tap } from 'rxjs';
             </div>
             <div class="space-y-2">
               <label class="form-label font-medium">Phường / Xã</label>
-              <select class="form-control form-select" formControlName="ward">
+              <select class="form-control form-select" formControlName="wardId">
                 <option *ngFor="let p of vm.wardsByDis" [ngValue]="p.id">
                   {{ p.name }}
                 </option>
@@ -54,22 +54,24 @@ import { tap } from 'rxjs';
               ></textarea>
             </div>
           </div>
+
+          <div class="space-y-4">
+            <button
+              [disabled]="!vm.isValidAddressInfo"
+              class="form-button bg-gradient-to-r from-primary-2/20 to-primary-1/20"
+              [ngClass]="{ 'bg-opacity-20': !vm.isValidAddressInfo }"
+            >
+              Tiếp tục
+            </button>
+            <button
+              type="button"
+              class="form-button bg-white text-black border border-gray-300 shadow-none"
+              (click)="onBack()"
+            >
+              Quay lại
+            </button>
+          </div>
         </form>
-        <div class="space-y-4">
-          <button
-            [disabled]="!vm.isValidAddressInfo"
-            class="form-button bg-gradient-to-r from-primary-2/20 to-primary-1/20"
-            [ngClass]="{ 'bg-opacity-20': !vm.isValidAddressInfo }"
-          >
-            Tiếp tục
-          </button>
-          <button
-            class="form-button bg-white text-black border border-gray-300 shadow-none"
-            (click)="onBack()"
-          >
-            Quay lại
-          </button>
-        </div>
       </div>
     </auth-form>
   `,
@@ -84,6 +86,14 @@ export class AddressInforComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router
   ) {
+    this.authStore.isValidUserInfo$
+      .pipe(
+        take(1),
+        tap((isValid) => {
+          !isValid && router.navigate(['auth']);
+        })
+      )
+      .subscribe();
     this.initForm();
   }
 
@@ -93,9 +103,15 @@ export class AddressInforComponent implements OnInit {
     this.form = this.fb.group({
       province: [null],
       district: [null],
-      ward: [null],
+      wardId: [null],
       address: '',
     });
+    this.authStore.user$
+      .pipe(
+        take(1),
+        tap((value) => this.form.patchValue(value))
+      )
+      .subscribe();
     this.form.valueChanges
       .pipe(tap((value) => this.authStore.updateUser(value)))
       .subscribe();
@@ -103,11 +119,14 @@ export class AddressInforComponent implements OnInit {
       .pipe(tap(() => this.district.setValue(null)))
       .subscribe();
     this.district.valueChanges
-      .pipe(tap(() => this.ward.setValue(null)))
+      .pipe(tap(() => this.wardId.setValue(null)))
       .subscribe();
   }
 
-  onSubmit() {}
+  onSubmit() {
+    console.log('onSubmit');
+    this.authStore.regiserUser();
+  }
 
   onBack() {
     this.router.navigate(['auth']);
@@ -120,7 +139,7 @@ export class AddressInforComponent implements OnInit {
   get district(): FormControl {
     return this.form.get('district') as FormControl;
   }
-  get ward(): FormControl {
-    return this.form.get('ward') as FormControl;
+  get wardId(): FormControl {
+    return this.form.get('wardId') as FormControl;
   }
 }

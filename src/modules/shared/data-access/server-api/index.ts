@@ -1,1 +1,1 @@
-export * from './address.api'
+export * from './lib/address.api'
