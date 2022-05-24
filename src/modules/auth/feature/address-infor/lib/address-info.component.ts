@@ -18,9 +18,14 @@ import { combineLatest, take, tap } from 'rxjs';
             <div class="space-y-2">
               <label class="form-label font-medium">Tỉnh / Thành phố</label>
               <select
-                class="form-control form-select placeholder:text-gray-400"
+                class="form-control form-select"
+                [ngClass]="{ 'text-gray-400': !province.value }"
                 formControlName="province"
+                required
               >
+                <option [ngValue]="null" disabled selected hidden>
+                  Chọn tỉnh / thành phố
+                </option>
                 <option *ngFor="let p of vm.provinces" [ngValue]="p.id">
                   {{ p.name }}
                 </option>
@@ -31,7 +36,12 @@ import { combineLatest, take, tap } from 'rxjs';
               <select
                 class="form-control form-select"
                 formControlName="district"
+                [ngClass]="{ 'text-gray-400': !district.value }"
+                required
               >
+                <option [ngValue]="null" disabled selected hidden>
+                  Chọn quận / huyện
+                </option>
                 <option *ngFor="let p of vm.districtsByProv" [ngValue]="p.id">
                   {{ p.name }}
                 </option>
@@ -39,7 +49,15 @@ import { combineLatest, take, tap } from 'rxjs';
             </div>
             <div class="space-y-2">
               <label class="form-label font-medium">Phường / Xã</label>
-              <select class="form-control form-select" formControlName="wardId">
+              <select
+                class="form-control form-select"
+                [ngClass]="{ 'text-gray-400': !wardId.value }"
+                formControlName="wardId"
+                required
+              >
+                <option [ngValue]="null" disabled selected hidden>
+                  Chọn phường / xã
+                </option>
                 <option *ngFor="let p of vm.wardsByDis" [ngValue]="p.id">
                   {{ p.name }}
                 </option>

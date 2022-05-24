@@ -17,9 +17,10 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+import Cookies from 'js-cookie';
 
 export interface AuthState {
-  user: Omit<RegisterUser, 'sessionId'>;
+  user: RegisterUser;
 }
 
 @Injectable()
@@ -37,10 +38,12 @@ export class AuthStore extends ComponentStore<AuthState> {
         district: null,
         wardId: null,
         address: '',
+        sessionId: null,
       },
     });
+    this.addSessionId();
     // super(<AuthState>{})
-    this.addressStore.getAddress();
+    // this.addressStore.getAddress();
   }
   readonly user$ = this.select((state) => state.user);
   readonly province$ = this.select(this.user$, (state) => state.province);
@@ -99,26 +102,52 @@ export class AuthStore extends ComponentStore<AuthState> {
     user: { ...state.user, ...userData },
   }));
 
-  regiserUser = this.effect(($effect) =>
+  addSessionId = this.effect(($effect) =>
     $effect.pipe(
       switchMap(() =>
-        combineLatest([this.addressStore.sessionId$, this.user$]).pipe(
-          switchMap(([sessionId, user]) =>
-            this.addressApi
-              .registerAddress({
-                sessionId,
-                ...user,
-              })
-              .pipe(
-                tap({
-                  next: () => this.router.navigate(['home']),
-                  error: (e) => console.log(e),
-                }),
-                catchError(() => EMPTY)
-              )
-          )
+        this.addressStore.sessionId$.pipe(
+          tap((sessionId) => this.updateUser({ sessionId }))
         )
       )
     )
   );
+
+  regiserUser = this.effect(($effect) =>
+    $effect.pipe(
+      combineLatestWith(this.user$),
+      switchMap(([, user]) =>
+        this.addressApi.registerAddress(user).pipe(
+          tap({
+            next: () => {
+              Cookies.set('user', JSON.stringify(user));
+              this.router.navigate(['home']);
+            },
+            error: (e) => console.log(e),
+          }),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  // regiserUser = this.effect(($effect) =>
+  //   $effect.pipe(
+  //     switchMap(() =>
+  //       combineLatestWith(this.user$).pipe(
+  //         switchMap(([user]) => {
+  //           return this.addressApi.registerAddress(user).pipe(
+  //             tap({
+  //               next: () => {
+  //                 Cookies.set('user', JSON.stringify(user));
+  //                 this.router.navigate(['home']);
+  //               },
+  //               error: (e) => console.log(e),
+  //             }),
+  //             catchError(() => EMPTY)
+  //           );
+  //         })
+  //       )
+  //     )
+  //   )
+  // );
 }

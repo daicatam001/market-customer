@@ -8,14 +8,11 @@ import { AppComponent } from './app.component';
 import { AddressStore } from '@shared/data-access/store/lib/address.store';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
-// function initializeApp(addressStore:AddressStore){
-//  return ()=> addressStore.getAddress()
-// }
+function initializeApp(addressStore: AddressStore) {
+  return () => addressStore.getAddress();
+}
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -24,13 +21,13 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   providers: [
     getAppConfigProvider(environment),
-    // {
-    //   provide:APP_INITIALIZER,
-    //   useFactory: initializeApp,
-    //   deps:[AddressStore],
-    //   multi:true
-    // }
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [AddressStore],
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
