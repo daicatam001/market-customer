@@ -29,6 +29,7 @@ function initializeApp(
           } catch (e) {
             authStore.updateUser({ sessionId: res.sessionId });
           }
+          authStore.regiserUser();
         },
       })
     );
