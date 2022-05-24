@@ -4,26 +4,24 @@ import { ComponentStore } from '@ngrx/component-store';
 import {
   DistrictEntry,
   RegisterUser,
-  WardEntry,
+  WardEntry
 } from '@shared/data-access/models';
 import AddressApi from '@shared/data-access/server-api/lib/address.api';
 import { AddressStore } from '@shared/data-access/store';
+import Cookies from 'js-cookie';
 import {
-  catchError,
-  combineLatest,
-  combineLatestWith,
+  catchError, combineLatestWith,
   EMPTY,
   map,
   switchMap,
-  tap,
+  tap
 } from 'rxjs';
-import Cookies from 'js-cookie';
 
 export interface AuthState {
   user: RegisterUser;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthStore extends ComponentStore<AuthState> {
   constructor(
     private addressStore: AddressStore,
@@ -41,9 +39,6 @@ export class AuthStore extends ComponentStore<AuthState> {
         sessionId: null,
       },
     });
-    this.addSessionId();
-    // super(<AuthState>{})
-    // this.addressStore.getAddress();
   }
   readonly user$ = this.select((state) => state.user);
   readonly province$ = this.select(this.user$, (state) => state.province);
@@ -102,16 +97,6 @@ export class AuthStore extends ComponentStore<AuthState> {
     user: { ...state.user, ...userData },
   }));
 
-  addSessionId = this.effect(($effect) =>
-    $effect.pipe(
-      switchMap(() =>
-        this.addressStore.sessionId$.pipe(
-          tap((sessionId) => this.updateUser({ sessionId }))
-        )
-      )
-    )
-  );
-
   regiserUser = this.effect(($effect) =>
     $effect.pipe(
       combineLatestWith(this.user$),
@@ -129,25 +114,4 @@ export class AuthStore extends ComponentStore<AuthState> {
       )
     )
   );
-
-  // regiserUser = this.effect(($effect) =>
-  //   $effect.pipe(
-  //     switchMap(() =>
-  //       combineLatestWith(this.user$).pipe(
-  //         switchMap(([user]) => {
-  //           return this.addressApi.registerAddress(user).pipe(
-  //             tap({
-  //               next: () => {
-  //                 Cookies.set('user', JSON.stringify(user));
-  //                 this.router.navigate(['home']);
-  //               },
-  //               error: (e) => console.log(e),
-  //             }),
-  //             catchError(() => EMPTY)
-  //           );
-  //         })
-  //       )
-  //     )
-  //   )
-  // );
 }

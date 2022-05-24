@@ -20,6 +20,6 @@ import { AuthStore } from '@auth/data-access';
   ],
   exports: [RouterModule],
   declarations: [],
-  providers: [AuthStore],
+  // providers: [AuthStore],
 })
 export class AuthSellModule {}
