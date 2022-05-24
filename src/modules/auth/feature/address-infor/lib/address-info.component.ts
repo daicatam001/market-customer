@@ -1,13 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthStore } from '@auth/data-access';
-import { combineLatest, take, tap } from 'rxjs';
+import { DistrictEntry, WardEntry } from '@shared/data-access/models';
+import { combineLatestWith, map, Observable, take, tap } from 'rxjs';
 
 @Component({
   selector: 'address-info',
   template: `
-    <auth-form *ngIf="vm$ | async as vm">
+    <auth-form>
       <div class="py-8 px-4 md:px-8 md:col-span-1 col-span-2">
         <div class="mb-4">
           <div class="text-2xl font-bold">Thông tin địa chỉ</div>
@@ -26,7 +32,7 @@ import { combineLatest, take, tap } from 'rxjs';
                 <option [ngValue]="null" disabled selected hidden>
                   Chọn tỉnh / thành phố
                 </option>
-                <option *ngFor="let p of vm.provinces" [ngValue]="p.id">
+                <option *ngFor="let p of provinces$ | async" [ngValue]="p.id">
                   {{ p.name }}
                 </option>
               </select>
@@ -42,7 +48,10 @@ import { combineLatest, take, tap } from 'rxjs';
                 <option [ngValue]="null" disabled selected hidden>
                   Chọn quận / huyện
                 </option>
-                <option *ngFor="let p of vm.districtsByProv" [ngValue]="p.id">
+                <option
+                  *ngFor="let p of districtsByProv$ | async"
+                  [ngValue]="p.id"
+                >
                   {{ p.name }}
                 </option>
               </select>
@@ -58,7 +67,7 @@ import { combineLatest, take, tap } from 'rxjs';
                 <option [ngValue]="null" disabled selected hidden>
                   Chọn phường / xã
                 </option>
-                <option *ngFor="let p of vm.wardsByDis" [ngValue]="p.id">
+                <option *ngFor="let p of wardsByDis$ | async" [ngValue]="p.id">
                   {{ p.name }}
                 </option>
               </select>
@@ -75,9 +84,9 @@ import { combineLatest, take, tap } from 'rxjs';
 
           <div class="space-y-4">
             <button
-              [disabled]="!vm.isValidAddressInfo"
+              [disabled]="form.invalid"
               class="form-button bg-gradient-to-r from-primary-2/20 to-primary-1/20"
-              [ngClass]="{ 'bg-opacity-20': !vm.isValidAddressInfo }"
+              [ngClass]="{ 'bg-opacity-20': form.invalid }"
             >
               Tiếp tục
             </button>
@@ -96,9 +105,11 @@ import { combineLatest, take, tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressInforComponent implements OnInit {
-  readonly vm$ = this.authStore.vm$;
   form: FormGroup;
-
+  districtsByProv$: Observable<DistrictEntry[]>;
+  wardsByDis$: Observable<WardEntry[]>;
+  readonly provinces$ = this.authStore.provinces$;
+  readonly user$ = this.authStore.user$;
   constructor(
     private authStore: AuthStore,
     private fb: FormBuilder,
@@ -119,31 +130,37 @@ export class AddressInforComponent implements OnInit {
 
   private initForm() {
     this.form = this.fb.group({
-      province: [null],
-      district: [null],
-      wardId: [null],
-      address: '',
+      province: [null, [Validators.required]],
+      district: [null, [Validators.required]],
+      wardId: [null, [Validators.required]],
+      address: ['', [Validators.required]],
     });
+    this.districtsByProv$ = this.province.valueChanges.pipe(
+      tap(() => this.district.setValue(null)),
+      combineLatestWith(this.authStore.district$),
+      tap((res) => console.log(res)),
+      map(([province, districts]: [number | null, DistrictEntry[]]) =>
+        districts.filter((d) => d.provinceId === province)
+      )
+    );
+    this.wardsByDis$ = this.district.valueChanges.pipe(
+      tap(() => this.wardId.setValue(null)),
+      combineLatestWith(this.authStore.wards$),
+      map(([district, wards]: [number | null, WardEntry[]]) =>
+        wards.filter((w) => w.districtId === district)
+      )
+    );
     this.authStore.user$
       .pipe(
         take(1),
         tap((value) => this.form.patchValue(value))
       )
       .subscribe();
-    this.form.valueChanges
-      .pipe(tap((value) => this.authStore.updateUser(value)))
-      .subscribe();
-    this.province.valueChanges
-      .pipe(tap(() => this.district.setValue(null)))
-      .subscribe();
-    this.district.valueChanges
-      .pipe(tap(() => this.wardId.setValue(null)))
-      .subscribe();
   }
 
   onSubmit() {
-    console.log('onSubmit');
-    this.authStore.regiserUser();
+    this.authStore.updateUser(this.form.getRawValue());
+    this.authStore.regiserAddress(true);
   }
 
   onBack() {

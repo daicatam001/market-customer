@@ -26,10 +26,11 @@ function initializeApp(
           try {
             const user = JSON.parse(Cookies.get('user')!);
             authStore.updateUser({ ...user, sessionId: res.sessionId });
+            authStore.regiserAddress(false);
           } catch (e) {
             authStore.updateUser({ sessionId: res.sessionId });
           }
-          authStore.regiserUser();
+        
         },
       })
     );

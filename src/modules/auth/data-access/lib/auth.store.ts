@@ -4,17 +4,19 @@ import { ComponentStore } from '@ngrx/component-store';
 import {
   DistrictEntry,
   RegisterUser,
-  WardEntry
+  WardEntry,
 } from '@shared/data-access/models';
 import AddressApi from '@shared/data-access/server-api/lib/address.api';
 import { AddressStore } from '@shared/data-access/store';
 import Cookies from 'js-cookie';
 import {
-  catchError, combineLatestWith,
+  catchError,
+  combineLatestWith,
   EMPTY,
   map,
+  Observable,
   switchMap,
-  tap
+  tap,
 } from 'rxjs';
 
 export interface AuthState {
@@ -41,71 +43,37 @@ export class AuthStore extends ComponentStore<AuthState> {
     });
   }
   readonly user$ = this.select((state) => state.user);
-  readonly province$ = this.select(this.user$, (state) => state.province);
-  readonly district$ = this.select(this.user$, (state) => state.district);
+  readonly isAuth$ = this.select(this.user$, (state) => {
+    return (Object.keys(state) as (keyof RegisterUser)[]).every(
+      (key) => !!state[key]
+    );
+  });
   readonly isValidUserInfo$ = this.select(
     this.user$,
     (state) => state.name.trim() && state.phoneNumber.trim()
   );
-  readonly isValidAddressInfo$ = this.select(
-    this.user$,
-    (state) =>
-      state.province && state.district && state.wardId && state.address.trim()
-  );
 
   readonly provinces$ = this.addressStore.provinces$;
-  readonly districtsByProv$ = this.addressStore.districts$.pipe(
-    combineLatestWith(this.province$),
-    map(([districts, province]: [DistrictEntry[], number | null]) =>
-      districts.filter((d) => d.provinceId === province)
-    )
-  );
-
-  readonly wardsByDis$ = this.addressStore.wards$.pipe(
-    combineLatestWith(this.district$),
-    map(([districts, district]: [WardEntry[], number | null]) =>
-      districts.filter((d) => d.districtId === district)
-    )
-  );
-
-  readonly vm$ = this.select(
-    this.provinces$,
-    this.districtsByProv$,
-    this.wardsByDis$,
-    this.isValidUserInfo$,
-    this.isValidAddressInfo$,
-    this.user$,
-    (
-      provinces,
-      districtsByProv,
-      wardsByDis,
-      isValidUserInfo,
-      isValidAddressInfo,
-      user
-    ) => ({
-      provinces,
-      districtsByProv,
-      wardsByDis,
-      isValidUserInfo,
-      isValidAddressInfo,
-      user,
-    })
-  );
+  readonly district$ = this.addressStore.districts$;
+  readonly wards$ = this.addressStore.wards$;
 
   updateUser = this.updater((state, userData: Partial<RegisterUser>) => ({
     ...state,
     user: { ...state.user, ...userData },
   }));
 
-  regiserUser = this.effect(($effect) =>
-    $effect.pipe(
+  regiserAddress = this.effect((isRedirect$: Observable<boolean>) =>
+    isRedirect$.pipe(
       combineLatestWith(this.user$),
-      switchMap(([, user]) =>
+      switchMap(([isRedirect, user]) =>
         this.addressApi.registerAddress(user).pipe(
           tap({
             next: () => {
               Cookies.set('user', JSON.stringify(user));
-              this.router.navigate(['home']);
+              console.log(isRedirect)
+              if (isRedirect) {
+                this.router.navigate(['home']);
+              }
             },
             error: (e) => console.log(e),
           }),

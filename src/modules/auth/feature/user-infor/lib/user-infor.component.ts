@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthStore } from '@auth/data-access';
 import { take, tap } from 'rxjs';
@@ -7,7 +7,7 @@ import { take, tap } from 'rxjs';
 @Component({
   selector: 'user-info',
   template: `
-    <auth-form *ngIf="vm$ | async as vm">
+    <auth-form>
       <div class="py-8 px-4 md:px-8 md:col-span-1 col-span-2">
         <div class="text-center mb-6">
           <img
@@ -39,9 +39,9 @@ import { take, tap } from 'rxjs';
           </div>
           <div class="space-y-4">
             <button
-              [disabled]="!vm.isValidUserInfo"
+              [disabled]="form.invalid"
               class="form-button bg-gradient-to-r from-primary-2/20 to-primary-1/20"
-              [ngClass]="{ 'bg-opacity-20': !vm.isValidUserInfo }"
+              [ngClass]="{ 'bg-opacity-20': form.invalid }"
             >
               Tiếp tục
             </button>
@@ -60,8 +60,6 @@ import { take, tap } from 'rxjs';
 })
 export class UserInforComponent implements OnInit {
   form: FormGroup;
-
-  readonly vm$ = this.authStore.vm$;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -74,8 +72,8 @@ export class UserInforComponent implements OnInit {
 
   initForm() {
     this.form = this.fb.group({
-      name: [''],
-      phoneNumber: [],
+      name: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
     });
     this.authStore.user$
       .pipe(take(1))
@@ -86,7 +84,7 @@ export class UserInforComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form.getRawValue());
+    this.authStore.updateUser(this.form.getRawValue())
     this.router.navigate(['auth', 'address']);
   }
 }
