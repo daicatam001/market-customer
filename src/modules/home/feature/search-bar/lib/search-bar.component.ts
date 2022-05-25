@@ -3,8 +3,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'search-bar',
   template: `
-    <div class="px-4 py-3">
-      <input class="px-6 py-1.5 bg-slate-100 rounded-full border-0 outline-none w-full " />
+    <div class="px-4 py-3 relative">
+      <svg width="16" height="16" class="text-slate-400 absolute top-1/2 -translate-y-1/2 left-8">
+        <use xlink:href="#ico-search" />
+      </svg>
+      <input class="px-6 py-1.5 bg-slate-100 rounded-full border-0 outline-none w-full indent-4" placeholder="Tìm kiểu cửa hàng, món ăn..." />
     </div>
   `,
 })

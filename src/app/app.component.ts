@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  template: `<router-outlet></router-outlet>`,
+  template: ` <the-svg></the-svg>
+    <router-outlet></router-outlet>`,
 })
 export class AppComponent {
   title = 'market-customer';

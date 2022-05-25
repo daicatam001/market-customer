@@ -7,6 +7,7 @@ import { getAppConfigProvider } from '@shared/data-access/app-config/app-config.
 import { AddressRes } from '@shared/data-access/models';
 import AddressApi from '@shared/data-access/server-api/lib/address.api';
 import { AddressStore } from '@shared/data-access/store/lib/address.store';
+import { SvgModule } from '@shared/ui';
 import { WebSellModule } from '@shell/feature';
 import Cookies from 'js-cookie';
 import { tap } from 'rxjs';
@@ -41,6 +42,7 @@ function initializeApp(
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    SvgModule,
     WebSellModule,
   ],
   providers: [
