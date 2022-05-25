@@ -1,16 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'home-layout',
-    template: `
-        <div class="max-w-[700px] mx-auto">
-            <search-bar></search-bar>
-        </div>
-    `
+  selector: 'home-layout',
+  template: `
+    <div class="max-w-[700px] mx-auto space-y-6">
+      <search-bar></search-bar>
+      <div class="px-4">
+        <banner image="/assets/images/banner-1.jpg"></banner>
+      </div>
+      <div>
+        <market-list></market-list>
+      </div>
+    </div>
+  `,
 })
-
 export class HomeLayoutComponent implements OnInit {
-    constructor() { }
+  constructor() {}
 
-    ngOnInit() { }
+  ngOnInit() {}
 }
