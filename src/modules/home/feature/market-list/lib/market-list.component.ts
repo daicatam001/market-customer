@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'market-list',
   template: `
-    <div class="px-4">
+    <div class="p-4 bg-white border-y border-slate-100">
       <h2 class="text-primary-2 font-semibold text-lg">Danh sách chợ</h2>
       <div class="grid grid-cols-3 mt-4 gap-6">
         <market-card name="Chợ Định Công" logo="Đ"></market-card>

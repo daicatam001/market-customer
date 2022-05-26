@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'search-bar',
   template: `
-    <div class="py-3 px-4 relative border-b">
+    <div class="py-3 px-4 relative border-b bg-white">
       <svg width="16" height="16" class="text-slate-400 absolute top-1/2 -translate-y-1/2 left-8">
         <use xlink:href="#ico-search" />
       </svg>

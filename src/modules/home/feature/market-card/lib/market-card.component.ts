@@ -9,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
       >
         <span class="text-primary-1 text-xl font-bold">{{ logo }}</span>
       </div>
-      <div class="mx-auto mt-2 text-sm text-center font-medium max-w-[100px] whitespace-normal">{{ name }}</div>
+      <div class="mx-auto mt-2 text-xs text-center font-medium max-w-[100px] whitespace-normal">{{ name }}</div>
     </div>
   `,
 })
