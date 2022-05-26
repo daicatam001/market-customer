@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DishListModule } from '@home/feature/dish-list/lib/dish-list.module';
 import { FoodListModule } from '@home/feature/food-list';
 import { MarketListModule } from '@home/feature/market-list';
 import { SearchBarModule } from '@home/feature/search-bar';
@@ -14,6 +15,7 @@ import { HomeLayoutComponent } from './home-layout.component';
     BannerModule,
     MarketListModule,
     FoodListModule,
+    DishListModule,
     RouterModule.forChild([{ path: '', component: HomeLayoutComponent }]),
   ],
   exports: [RouterModule],

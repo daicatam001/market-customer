@@ -1,4 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: 'food-item',
@@ -19,22 +24,23 @@ import { Component, Input, OnInit } from '@angular/core';
   styles: [
     `
       .type-meat {
-         background-position: -4px 148px
+        background-position: -4px 148px;
       }
       .type-fish {
-        background-position: 148px 148px
-     }
-     .type-vegetable {
-        background-position: 52px 52px
-     }
-     .type-fruit {
-        background-position: -4px 100px
-     }
-     .type-dry-food {
-        background-position: -52px 52px
-     }
+        background-position: 148px 148px;
+      }
+      .type-vegetable {
+        background-position: 52px 52px;
+      }
+      .type-fruit {
+        background-position: -4px 100px;
+      }
+      .type-dry-food {
+        background-position: -52px 52px;
+      }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FoodItemComponent implements OnInit {
   @Input() name: string;

@@ -11,8 +11,9 @@ import { Component, OnInit } from '@angular/core';
       <div>
         <market-list></market-list>
       </div>
-      <div>
+      <div class="mt-4 border-y border-slate-100 bg-white">
         <food-list></food-list>
+        <dish-list></dish-list>
       </div>
     </div>
   `,
