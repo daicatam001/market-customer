@@ -8,14 +8,16 @@ import { Component, Input, OnInit } from '@angular/core';
         class="w-[100px] flex-shrink-0 bg-contain bg-center"
         [ngStyle]="{ 'background-image': 'url(' + image + ')' }"
       ></div>
-      <div class="space-y-1 flex-grow">
-        <h2 class="font-semibold">{{ title }}</h2>
+      <div class="flex-grow">
+        <div class="flex gap-4 justify-between mb-3">
+          <h2 class="font-semibold text-sm">{{ title }}</h2>
+          <p class="font-medium text-sm text-primary-1">
+            {{ price }}
+          </p>
+        </div>
 
-        <p class="font-medium text-sm text-primary-1">
-          {{ price }}
-        </p>
         <p
-          class="text-slate-400 flex gap-1 items-center text-sm whitespace-nowrap"
+          class="text-slate-400 flex gap-1 items-center text-xs whitespace-nowrap mb-1"
         >
           <svg width="13" height="13">
             <use xlink:href="#ico-map-marker"></use>
@@ -27,7 +29,7 @@ import { Component, Input, OnInit } from '@angular/core';
           </svg>
           <span>{{ delivery }}</span>
         </p>
-        <p class="text-sm text-slate-700" role="button">
+        <p class="text-xs text-slate-700" role="button">
           {{ store }}
         </p>
       </div>
