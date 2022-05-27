@@ -19,7 +19,7 @@ import { Component, OnInit } from '@angular/core';
       <div class="mt-2 bg-slate-50">
         <div>
           <dish-card
-          image="/assets/images/thit-ba-chi.jpg"
+            image="/assets/images/thit-ba-chi.jpg"
             title="Thịt ba chỉ"
             price="30.000/kg"
             store="Cửa hàng bà Hoa, chọ Bóp"
@@ -30,6 +30,7 @@ import { Component, OnInit } from '@angular/core';
         <div>
           <dish-card
             title="Thịt thăn"
+            image="/assets/images/thit-than-lon.jpg"
             price="30.000/kg"
             store="Cửa hàng bà Hồng, chọ Bóp"
             distance="1.0 km"
