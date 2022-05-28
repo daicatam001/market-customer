@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComponentStore } from '@ngrx/component-store';
 import {
-  DistrictEntry,
-  RegisterUser,
-  WardEntry,
+  RegisterUser
 } from '@shared/data-access/models';
 import AddressApi from '@shared/data-access/server-api/lib/address.api';
 import { AddressStore } from '@shared/data-access/store';
@@ -12,11 +10,9 @@ import Cookies from 'js-cookie';
 import {
   catchError,
   combineLatestWith,
-  EMPTY,
-  map,
-  Observable,
+  EMPTY, Observable,
   switchMap,
-  tap,
+  tap
 } from 'rxjs';
 
 export interface AuthState {
@@ -69,7 +65,7 @@ export class AuthStore extends ComponentStore<AuthState> {
         this.addressApi.registerAddress(user).pipe(
           tap({
             next: () => {
-              Cookies.set('user', JSON.stringify(user));
+              Cookies.set('user', JSON.stringify(user), { expires: 7 });
               console.log(isRedirect)
               if (isRedirect) {
                 this.router.navigate(['home']);

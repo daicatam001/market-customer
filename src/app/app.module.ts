@@ -3,6 +3,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthStore } from '@auth/data-access';
+import { authInterceptorProvider } from '@auth/util/intercepter/lib/auth.intercepter';
 import { getAppConfigProvider } from '@shared/data-access/app-config/app-config.token';
 import { AddressRes } from '@shared/data-access/models';
 import AddressApi from '@shared/data-access/server-api/lib/address.api';
@@ -53,6 +54,7 @@ function initializeApp(
       deps: [AddressStore, AddressApi, AuthStore],
       multi: true,
     },
+    authInterceptorProvider,
   ],
   bootstrap: [AppComponent],
 })

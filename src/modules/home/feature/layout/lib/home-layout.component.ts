@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HomeStore } from '@home/data-access';
 
 @Component({
   selector: 'home-layout',
@@ -19,7 +20,9 @@ import { Component, OnInit } from '@angular/core';
   `,
 })
 export class HomeLayoutComponent implements OnInit {
-  constructor() {}
+  constructor(private homeStore: HomeStore) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.homeStore.initData()
+  }
 }

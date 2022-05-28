@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HomeStore } from '@home/data-access';
 import { DefaultlayuoutComponent, DefaultlayuoutModule } from '@shared/feature';
 
 @NgModule({
@@ -15,6 +16,6 @@ import { DefaultlayuoutComponent, DefaultlayuoutModule } from '@shared/feature';
   ],
   exports: [RouterModule, DefaultlayuoutModule],
   declarations: [],
-  providers: [],
+  providers: [HomeStore],
 })
 export class HomeSellModule {}

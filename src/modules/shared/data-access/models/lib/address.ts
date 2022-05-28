@@ -24,3 +24,15 @@ export type AddressRes = ResponseData & {
   province: Province[];
   sessionId: string;
 };
+
+export interface Market {
+  id: number;
+  name: string;
+  type: string;
+  wardId: number;
+  latitude: number;
+  longitude: number;
+  distance: number;
+}
+
+ 
