@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, NgModule, OnInit } from '@angular/core';
-import { HomeStore } from '@home/data-access';
+import { HomeStore } from '@home/data-access/store';
 import { ProductTypeItemModule } from '@home/ui/product-type-item';
 
 @Component({

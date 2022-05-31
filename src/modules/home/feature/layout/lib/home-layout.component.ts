@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HomeStore } from '@home/data-access';
+import { HomeStore } from '@home/data-access/store';
 import { MarketListModule } from '@home/feature/market-list';
 import { ProductListModule } from '@home/feature/product-list';
 import { ProductTypeListModule } from '@home/feature/product-type-list';

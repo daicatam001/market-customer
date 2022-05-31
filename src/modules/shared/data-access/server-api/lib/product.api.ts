@@ -2,12 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { APP_CONFIG } from '@shared/data-access/app-config/app-config.token';
 import {
-  AddressRes,
   AppConfig,
-  RegisterUser,
+  ProductType,
   ResponseData,
+  StoreProduct,
 } from '@shared/data-access/models';
-import { ProductType } from '@shared/data-access/models/lib/product';
 import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class ProductApi {
@@ -16,7 +15,9 @@ export class ProductApi {
     @Inject(APP_CONFIG) private appConfig: AppConfig
   ) {}
 
-  getProductTypeInMarket(market: string): Observable<ResponseData<ProductType[]>> {
+  getProductTypeInMarket(
+    market: string
+  ): Observable<ResponseData<ProductType[]>> {
     return this.http.post<ResponseData<ProductType[]>>(
       `${this.appConfig.serverUrl}`,
       {
@@ -28,14 +29,17 @@ export class ProductApi {
     );
   }
 
-  getStoreProductInMarket(market: string): Observable<ResponseData<ProductType>> {
-    return this.http.post<ResponseData<ProductType>>(
+  getStoreProductInMarket(
+    market: string,
+    type1: string
+  ): Observable<ResponseData<StoreProduct[]>> {
+    return this.http.post<ResponseData<StoreProduct[]>>(
       `${this.appConfig.serverUrl}`,
       {
-        action: 'getProductTypeInMarket',
+        action: 'getStoreProductInMarket',
         version: '1.0',
         market,
-        productType: 'THUC_PHAM_TUOI',
+        type1,
       }
     );
   }

@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  NgModule,
+  OnInit,
+} from '@angular/core';
+import { HomeStore } from '@home/data-access/store';
 import { ProductCardModule } from '@home/ui/product-card';
 
 @Component({
@@ -19,17 +25,14 @@ import { ProductCardModule } from '@home/ui/product-card';
         <div class="text-center py-3">Xem gần đây</div>
       </div>
       <div class="mt-2 bg-slate-50">
-        <div>
+        <div *ngFor="let sp of storeProducts$ | async">
           <product-card
-            image="/assets/images/thit-ba-chi.jpg"
-            title="Thịt ba chỉ"
-            price="30.000/kg"
-            store="Cửa hàng bà Hoa, chọ Bóp"
-            distance="1.0 km"
-            delivery="10 phút"
+            [product]="sp.product"
+            [price]="sp.price"
+            [priceUnit]="sp.priceUnit"
           ></product-card>
         </div>
-        <div>
+        <!-- <div>
           <product-card
             title="Thịt thăn"
             image="/assets/images/thit-than-lon.jpg"
@@ -38,17 +41,18 @@ import { ProductCardModule } from '@home/ui/product-card';
             distance="1.0 km"
             delivery="10 phút"
           ></product-card>
-        </div>
+        </div> -->
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent implements OnInit {
-  constructor() {}
+  readonly storeProducts$ = this.homeStore.storeProducts$;
+  constructor(private homeStore: HomeStore) {}
 
   ngOnInit() {}
 }
-
 
 @NgModule({
   imports: [CommonModule, ProductCardModule],

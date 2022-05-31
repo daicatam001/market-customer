@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HomeStore } from '@home/data-access';
+import { HomeStore } from '@home/data-access/store';
 import { DefaultlayuoutComponent, DefaultlayuoutModule } from '@shared/feature/default-layout';
 
 @NgModule({

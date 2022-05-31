@@ -1,6 +1,6 @@
 export interface RegisterUser {
   name: string;
-  phoneNumber: string;
+  phone: string;
   province: number | null;
   district: number | null;
   wardId: number | null;

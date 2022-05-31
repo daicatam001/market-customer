@@ -29,7 +29,7 @@ export class AuthStore extends ComponentStore<AuthState> {
     super({
       user: {
         name: '',
-        phoneNumber: '',
+        phone: '',
         province: null,
         district: null,
         wardId: null,
@@ -46,7 +46,7 @@ export class AuthStore extends ComponentStore<AuthState> {
   });
   readonly isValidUserInfo$ = this.select(
     this.user$,
-    (state) => state.name.trim() && state.phoneNumber.trim()
+    (state) => state.name.trim() && state.phone.trim()
   );
 
   readonly provinces$ = this.addressStore.provinces$;

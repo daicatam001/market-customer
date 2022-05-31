@@ -33,7 +33,7 @@ import { take, tap } from 'rxjs';
               <input
                 class="form-control"
                 placeholder="Nhập số điện thoại"
-                formControlName="phoneNumber"
+                formControlName="phone"
               />
             </div>
           </div>
@@ -73,7 +73,7 @@ export class UserInforComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       name: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
+      phone: ['', [Validators.required]],
     });
     this.authStore.user$
       .pipe(take(1))
