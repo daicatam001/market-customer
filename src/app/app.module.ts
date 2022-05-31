@@ -8,7 +8,7 @@ import { getAppConfigProvider } from '@shared/data-access/app-config/app-config.
 import { AddressRes } from '@shared/data-access/models';
 import { AddressApi } from '@shared/data-access/server-api';
 import { AddressStore } from '@shared/data-access/store';
-import { SvgModule } from '@shared/ui';
+import { SvgModule } from '@shared/ui/svg';
 import { WebSellModule } from '@shell/feature';
 import Cookies from 'js-cookie';
 import { tap } from 'rxjs';

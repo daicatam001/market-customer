@@ -1,5 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, NgModule, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { HomeStore } from '@home/data-access';
+import { MarketListModule } from '@home/feature/market-list';
+import { ProductListModule } from '@home/feature/product-list';
+import { ProductTypeListModule } from '@home/feature/product-type-list';
+import { SearchBarModule } from '@home/feature/search-bar';
+import { BannerModule } from '@shared/ui/banner';
 
 @Component({
   selector: 'home-layout',
@@ -13,8 +20,8 @@ import { HomeStore } from '@home/data-access';
         <market-list></market-list>
       </div>
       <div class="mt-4 border-y border-slate-100 bg-white">
-        <food-list></food-list>
-        <dish-list></dish-list>
+        <product-type-list></product-type-list>
+        <product-list></product-list>
       </div>
     </div>
   `,
@@ -26,3 +33,20 @@ export class HomeLayoutComponent implements OnInit {
     this.homeStore.initData()
   }
 }
+
+
+@NgModule({
+  imports: [
+    CommonModule,
+    SearchBarModule,
+    BannerModule,
+    MarketListModule,
+    ProductTypeListModule,
+    ProductListModule,
+    RouterModule.forChild([{ path: '', component: HomeLayoutComponent }]),
+  ],
+  exports: [RouterModule],
+  declarations: [HomeLayoutComponent],
+  providers: [],
+})
+export class HomeLayoutModule {}
