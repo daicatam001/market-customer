@@ -1,6 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthStore } from '@auth/data-access';
 import { getAppConfigProvider } from '@shared/data-access/app-config/app-config.token';
@@ -8,11 +9,13 @@ import { AddressRes } from '@shared/data-access/models';
 import AddressApi from '@shared/data-access/server-api/lib/address.api';
 import { AddressStore } from '@shared/data-access/store/lib/address.store';
 import { SvgModule } from '@shared/ui';
+import { AutoCompleteModule } from '@shared/ui/lib/autocomplete';
 import { WebSellModule } from '@shell/feature';
 import Cookies from 'js-cookie';
 import { tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 function initializeApp(
   addressStore: AddressStore,
@@ -39,8 +42,12 @@ function initializeApp(
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    AutoCompleteModule,
     BrowserModule,
+    CommonModule,
+    FormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     SvgModule,
     WebSellModule,
