@@ -33,6 +33,5 @@ export interface Market {
   latitude: number;
   longitude: number;
   distance: number;
+  image: string;
 }
-
- 

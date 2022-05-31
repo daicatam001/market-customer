@@ -1,13 +1,27 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { NgModule, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'firstChar',
 })
 export class FirstCharPipe implements PipeTransform {
-  transform(value: string | null, ...args: any[]): string {
+  transform(value: string | null, ...args: string[]): string {
     if (!value) {
       return '';
     }
-    return value.charAt(0);
+    args.forEach((arg) => {
+      const reg = new RegExp(arg, 'gi');
+      console.log(reg);
+      value = value!.replace(reg, '');
+    });
+    return value.trim().charAt(0);
   }
 }
+
+
+@NgModule({
+  imports: [],
+  exports: [FirstCharPipe],
+  declarations: [FirstCharPipe],
+  providers: [],
+})
+export class FirstCharModule {}

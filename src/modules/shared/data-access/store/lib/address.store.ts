@@ -7,7 +7,7 @@ import {
   EntryData,
   WardEntry
 } from '@shared/data-access/models';
-import AddressApi from '@shared/data-access/server-api/lib/address.api';
+import { AddressApi } from '@shared/data-access/server-api';
 
 export interface ResourcesState {
   provinceEntry: EntryData<Address>;

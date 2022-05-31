@@ -4,7 +4,7 @@ import { ComponentStore } from '@ngrx/component-store';
 import {
   RegisterUser
 } from '@shared/data-access/models';
-import AddressApi from '@shared/data-access/server-api/lib/address.api';
+import { AddressApi } from '@shared/data-access/server-api';
 import { AddressStore } from '@shared/data-access/store';
 import Cookies from 'js-cookie';
 import {

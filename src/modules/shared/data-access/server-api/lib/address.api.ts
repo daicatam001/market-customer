@@ -4,7 +4,7 @@ import { APP_CONFIG } from '@shared/data-access/app-config/app-config.token';
 import { AddressRes, AppConfig, RegisterUser, ResponseData } from '@shared/data-access/models';
 import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
-export default class AddressApi {
+export class AddressApi {
   constructor(
     private http: HttpClient,
     @Inject(APP_CONFIG) private appConfig: AppConfig

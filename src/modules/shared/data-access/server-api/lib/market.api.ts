@@ -7,7 +7,7 @@ import {
 } from '@shared/data-access/models';
 import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
-export default class MarketApi {
+export class MarketApi {
   constructor(
     private http: HttpClient,
     @Inject(APP_CONFIG) private appConfig: AppConfig
