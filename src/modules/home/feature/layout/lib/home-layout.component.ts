@@ -30,7 +30,9 @@ export class HomeLayoutComponent implements OnInit {
   constructor(private homeStore: HomeStore) {}
 
   ngOnInit() {
-    this.homeStore.initData()
+    this.homeStore.getMarkets()
+    this.homeStore.getProductTypes()
+    this.homeStore.getStoreProducts()
   }
 }
 
