@@ -14,6 +14,7 @@ export interface StoreProduct {
   latitude: number;
   longitude: number;
   distance: number;
+  spendTime: number;
   storeId: number;
   product: Product;
 }

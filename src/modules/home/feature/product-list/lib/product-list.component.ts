@@ -30,6 +30,8 @@ import { ProductCardModule } from '@home/ui/product-card';
             [product]="sp.product"
             [price]="sp.price"
             [priceUnit]="sp.priceUnit"
+            [distance]="sp.distance"
+            [spendTime]="sp.spendTime"
           ></product-card>
         </div>
         <!-- <div>

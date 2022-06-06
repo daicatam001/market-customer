@@ -12,7 +12,7 @@ import { BannerModule } from '@shared/ui/banner';
   selector: 'home-layout',
   template: `
     <div class="space-y-6 bg-slate-50 pb-10">
-      <search-bar></search-bar>
+      <!-- <search-bar></search-bar> -->
       <div class="px-4">
         <banner image="/assets/images/banner-1.jpg"></banner>
       </div>
@@ -38,7 +38,7 @@ export class HomeLayoutComponent implements OnInit {
 @NgModule({
   imports: [
     CommonModule,
-    SearchBarModule,
+    // SearchBarModule,
     BannerModule,
     MarketListModule,
     ProductTypeListModule,
